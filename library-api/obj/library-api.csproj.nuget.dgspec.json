@@ -1,0 +1,66 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/pminkows/Projects/web-api/library-api/library-api.csproj": {}
+  },
+  "projects": {
+    "/Users/pminkows/Projects/web-api/library-api/library-api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/pminkows/Projects/web-api/library-api/library-api.csproj",
+        "projectName": "library-api",
+        "projectPath": "/Users/pminkows/Projects/web-api/library-api/library-api.csproj",
+        "packagesPath": "/Users/pminkows/.nuget/packages/",
+        "outputPath": "/Users/pminkows/Projects/web-api/library-api/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/pminkows/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Components.Web": {
+              "target": "Package",
+              "version": "[5.0.15, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.406/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

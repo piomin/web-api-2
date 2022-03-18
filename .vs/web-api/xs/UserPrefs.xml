@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{160D54AE-5D25-4BD0-8A1E-3A63D0B66A53}|Default">
+  <MonoDevelop.Ide.ItemProperties.web-api FirstBuild="True" PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="web-api" expanded="True">
+            <Node name="library-api" expanded="True">
+              <Node name="Dependencies" expanded="True" />
+            </Node>
+            <Node name="web-api" expanded="True" selected="True">
+              <Node name="Properties" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.library-api FirstBuild="True" />
+</Properties>
