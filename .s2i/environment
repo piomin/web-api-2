@@ -1,0 +1,2 @@
+DOTNET_STARTUP_PROJECT=web-api/web-api.csproj
+
