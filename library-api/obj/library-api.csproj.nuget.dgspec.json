@@ -1,30 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "/Users/pminkows/Projects/web-api/library-api/library-api.csproj": {}
+    "/Users/pminkows/IdeaProjects/web-api-2/library-api/library-api.csproj": {}
   },
   "projects": {
-    "/Users/pminkows/Projects/web-api/library-api/library-api.csproj": {
+    "/Users/pminkows/IdeaProjects/web-api-2/library-api/library-api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/pminkows/Projects/web-api/library-api/library-api.csproj",
+        "projectUniqueName": "/Users/pminkows/IdeaProjects/web-api-2/library-api/library-api.csproj",
         "projectName": "library-api",
-        "projectPath": "/Users/pminkows/Projects/web-api/library-api/library-api.csproj",
+        "projectPath": "/Users/pminkows/IdeaProjects/web-api-2/library-api/library-api.csproj",
         "packagesPath": "/Users/pminkows/.nuget/packages/",
-        "outputPath": "/Users/pminkows/Projects/web-api/library-api/obj/",
+        "outputPath": "/Users/pminkows/IdeaProjects/web-api-2/library-api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/pminkows/.config/NuGet/NuGet.Config"
+          "/Users/pminkows/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net5.0"
+          "net7.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {}
           }
         },
@@ -35,21 +35,16 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Components.Web": {
-              "target": "Package",
-              "version": "[5.0.15, )"
-            }
-          },
+        "net7.0": {
+          "targetAlias": "net7.0",
           "imports": [
             "net461",
             "net462",
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -58,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.406/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.302/RuntimeIdentifierGraph.json"
         }
       }
     }
