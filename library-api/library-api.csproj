@@ -10,8 +10,5 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.15" />
-  </ItemGroup>
 
 </Project>
