@@ -49,12 +49,9 @@ stages:
       inputs:
         command: 'test'
         projects: '$(testProjectPath)'
-        arguments: '-c $(buildConfiguration) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory $(Build.SourcesDirectory)/TestResults'
-        publishTestResults: true
+        arguments: '-c $(buildConfiguration) --no-build'
+#        publishTestResults: true
         testRunTitle: 'Unit Tests'
-        testResultsFormat: 'VSTest'
-        testResultsFiles: '**/test-results.trx'
-        searchFolder: '$(Build.SourcesDirectory)/TestResults'
 
 - stage: Pack
   displayName: 'Create NuGet package'
