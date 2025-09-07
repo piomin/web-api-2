@@ -49,7 +49,7 @@ stages:
       inputs:
         command: 'test'
         projects: '$(testProjectPath)'
-        arguments: '--configuration $(buildConfiguration) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory $(Build.SourcesDirectory)/TestResults --collect:"Code coverage"'
+        arguments: '-c $(buildConfiguration) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory $(Build.SourcesDirectory)/TestResults'
         publishTestResults: true
         testRunTitle: 'Unit Tests'
         testResultsFormat: 'VSTest'
