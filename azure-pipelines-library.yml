@@ -28,7 +28,12 @@ stages:
       inputs:
         packageType: 'sdk'
         version: '9.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
+#        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: '6.x'
+        checkLatest: true
 
     - task: DotNetCoreCLI@2
       displayName: 'Restore NuGet packages'
