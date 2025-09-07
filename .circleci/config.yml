@@ -1,49 +1,29 @@
 version: 2.1
 
 orbs:
-  windows: circleci/windows@5.0
+  docker: circleci/docker@2.8.2
+
+executors:
+  dotnet:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:9.0
 
 jobs:
-  test:
-    description: Setup and run application tests
+  build-and-test:
     executor:
-      name: windows/default
-    steps:
-      - checkout
-#      - restore_cache:
-#          keys:
-#            - dotnet-packages-v1-{{ checksum "library-api/library-api.csproj" }}
-#            - dotnet-packages-v1-{{ checksum "web-api/web-api.csproj" }}
-      - run:
-          name: "Install project dependencies"
-          command: dotnet.exe restore
-      - save_cache:
-          paths:
-            - C:\Users\circleci\.nuget\packages
-          key: dotnet-packages-v1-{{ checksum "library-api/library-api.csproj" }}
-      - save_cache:
-          paths:
-            - C:\Users\circleci\.nuget\packages
-          key: dotnet-packages-v1-{{ checksum "web-api/web-api.csproj" }}
-      - run:
-          name: "Run Application Tests"
-          command: dotnet.exe test -v n --results-directory:test_coverage --collect:"Code Coverage"
-      - run:
-          name: "Print Working Directory"
-          command: pwd
-  build:
-    description: Build application with Release configuration
-    executor:
-      name: windows/default
+      name: dotnet
     steps:
       - checkout
       - run:
-          name: "Build Application according to some given configuration"
-          command: dotnet.exe build --configuration Release
+          name: Install Dependencies
+          command: dotnet restore
+      - run:
+          name: Build
+          command: dotnet build
+      - run:
+          name: Tests
+          command: dotnet test
 workflows:
-  test_and_build:
+  build-and-test:
     jobs:
-      - test
-      - build:
-          requires:
-            - test
+      - build-and-test
