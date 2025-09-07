@@ -42,14 +42,14 @@ stages:
       inputs:
         command: 'build'
         projects: '$(projectPath)'
-        arguments: '--configuration $(buildConfiguration) --no-restore /p:Version=$(versionNumber)'
+        arguments: '-c $(buildConfiguration) --no-restore'
 
     - task: DotNetCoreCLI@2
       displayName: 'Run tests'
       inputs:
         command: 'test'
         projects: '$(testProjectPath)'
-        arguments: '--configuration $(buildConfiguration) --no-build --collect:"Code coverage"'
+        arguments: '-c $(buildConfiguration) --no-build --collect:"Code coverage"'
         publishTestResults: true
 
 - stage: Pack
@@ -64,9 +64,9 @@ stages:
       inputs:
         command: 'pack'
         packagesToPack: '$(projectPath)'
-        versioningScheme: 'byEnvVar'
-        versionEnvVar: 'versionNumber'
-        arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/packages'
+#        versioningScheme: 'byEnvVar'
+#        versionEnvVar: 'versionNumber'
+        arguments: '-c $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/packages'
 
     - publish: '$(Build.ArtifactStagingDirectory)/packages'
       artifact: '$(buildArtifactName)'
@@ -75,7 +75,7 @@ stages:
 - stage: Publish
   displayName: 'Publish to Azure Artifacts'
   dependsOn: Pack
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - job: Publish
     steps:
