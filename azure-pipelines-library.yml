@@ -1,0 +1,92 @@
+trigger:
+- master
+
+pool:
+  vmImage: Azure Pipelines
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  projectPath: 'src/WebApi.Library/WebApi.Library.csproj'
+  testProjectPath: 'tests/WebApi.Library.Tests/WebApi.Library.Tests.csproj'
+  buildArtifactName: 'drop'
+  majorVersion: '1'
+  minorVersion: '0'
+  patchVersion: '0'
+  versionSuffix: '$(Build.BuildNumber)'
+  versionNumber: '$(majorVersion).$(minorVersion).$(patchVersion)$(versionSuffix)'
+
+stages:
+- stage: Build
+  displayName: 'Build and Test'
+  jobs:
+  - job: Build_And_Test
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .NET 9.0.x'
+      inputs:
+        packageType: 'sdk'
+        version: '9.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore NuGet packages'
+      inputs:
+        command: 'restore'
+        projects: '$(projectPath)'
+        feedsToUse: 'select'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build solution'
+      inputs:
+        command: 'build'
+        projects: '$(projectPath)'
+        arguments: '--configuration $(buildConfiguration) --no-restore /p:Version=$(versionNumber)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run tests'
+      inputs:
+        command: 'test'
+        projects: '$(testProjectPath)'
+        arguments: '--configuration $(buildConfiguration) --no-build --collect:"Code coverage"'
+        publishTestResults: true
+
+- stage: Pack
+  displayName: 'Create NuGet package'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: Pack
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Pack NuGet package'
+      inputs:
+        command: 'pack'
+        packagesToPack: '$(projectPath)'
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'versionNumber'
+        arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/packages'
+
+    - publish: '$(Build.ArtifactStagingDirectory)/packages'
+      artifact: '$(buildArtifactName)'
+      displayName: 'Publish Artifact'
+
+- stage: Publish
+  displayName: 'Publish to Azure Artifacts'
+  dependsOn: Pack
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - job: Publish
+    steps:
+    - task: NuGetAuthenticate@1
+      displayName: 'Authenticate with Azure Artifacts'
+
+    - task: NuGetCommand@2
+      displayName: 'Push to Azure Artifacts'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'pminkows'  # This should be your Azure DevOps feed name
+        allowPackageConflicts: false
