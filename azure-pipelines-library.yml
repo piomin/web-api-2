@@ -12,11 +12,7 @@ variables:
   projectPath: 'src/WebApi.Library/WebApi.Library.csproj'
   testProjectPath: 'tests/WebApi.Library.Tests/WebApi.Library.Tests.csproj'
   buildArtifactName: 'drop'
-#  majorVersion: '1'
-#  minorVersion: '0'
-#  patchVersion: '0'
-#  versionSuffix: '$(Build.BuildNumber)'
-#  versionNumber: '$(majorVersion).$(minorVersion).$(patchVersion)$(versionSuffix)'
+
 
 stages:
 - stage: Build
@@ -27,17 +23,13 @@ stages:
     - task: UseDotNet@2
       displayName: 'Use .NET 9.x'
       inputs:
-        packageType: 'sdk'
         version: '9.x'
-#        installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: DotNetCoreCLI@2
       displayName: 'Restore NuGet packages'
       inputs:
         command: 'restore'
         projects: '$(projectPath)'
-#        feedsToUse: 'select'
-#        vstsFeed: 'pminkows'
 
     - task: DotNetCoreCLI@2
       displayName: 'Build solution'
@@ -51,7 +43,7 @@ stages:
       inputs:
         command: 'test'
         projects: '$(testProjectPath)'
-        arguments: '-c $(buildConfiguration) --no-build'
+        arguments: '-c $(buildConfiguration)'
         publishTestResults: true
         testRunTitle: 'Unit Tests'
 
