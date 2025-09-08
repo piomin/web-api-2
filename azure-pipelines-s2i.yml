@@ -11,6 +11,10 @@ stages:
     jobs:
       - job: Build_And_Publish
         steps:
+          - task: DownloadSecureFile@1
+            name: NuGetConfig
+            inputs:
+              secureFile: 'NuGet.Config'
           - task: CmdLine@2
             inputs:
               script: |
@@ -20,16 +24,17 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
+                podman login registry.redhat.io -u $(RedHatUsername) -p $(RedHatPassword)
+            displayName: Login to Container Registry
+          - task: CmdLine@2
+            inputs:
+              script: |
                 echo "Installing S2I CLI (s2i)..."
                 curl -LO "https://github.com/openshift/source-to-image/releases/download/v1.5.1/source-to-image-v1.5.1-c301811d-linux-amd64.tar.gz"
                 tar -xzf source-to-image-v1.5.1-c301811d-linux-amd64.tar.gz
                 sudo mv s2i /usr/local/bin/
                 s2i version
             displayName: Install S2I CLI
-          - task: DownloadSecureFile@1
-            name: NuGetConfig
-            inputs:
-              secureFile: 'NuGet.Config'
           - task: CmdLine@2
             inputs:
               script: |
