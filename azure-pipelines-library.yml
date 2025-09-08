@@ -36,8 +36,8 @@ stages:
       inputs:
         command: 'restore'
         projects: '$(projectPath)'
-        feedsToUse: 'select'
-        vstsFeed: 'pminkows'
+#        feedsToUse: 'select'
+#        vstsFeed: 'pminkows'
 
     - task: DotNetCoreCLI@2
       displayName: 'Build solution'
