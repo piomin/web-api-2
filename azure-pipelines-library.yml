@@ -13,6 +13,9 @@ trigger:
 pool:
   name: Azure Pipelines
 
+variables:
+  - template: dotnet-library-stage.yml
+
 stages:
   - template: dotnet-library-stage.yml@templates
     parameters:
