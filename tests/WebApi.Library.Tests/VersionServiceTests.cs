@@ -6,7 +6,7 @@ namespace WebApi.Library.Tests;
 public class VersionServiceTests
 {
     private readonly VersionService _versionService;
-    private const string ExpectedVersion = "1.0.0";
+    private const string ExpectedVersion = "1.0.1";
 
     public VersionServiceTests()
     {
