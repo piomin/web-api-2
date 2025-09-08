@@ -35,5 +35,5 @@ stages:
               script: |
                 podman login registry.redhat.io -u $(RedHatUsername) -p $(RedHatPassword)
                 podman pull registry.redhat.io/rhel8/dotnet-90:latest
-                s2i build . registry.redhat.io/rhel8/dotnet-90:latest piomin/webapi-app:1.0.0 --volume $(NuGetConfig.secureFilePath):/opt/app-root/src/nuget.config:Z --context-dir src/WebApi.App
+                s2i build . registry.redhat.io/rhel8/dotnet-90:latest piomin/webapi-app:1.0.0 --volume $(NuGetConfig.secureFilePath):/opt/app-root/src/nuget.config:Z --context-dir src/WebApi.App --pull-policy never
             displayName: Build App
