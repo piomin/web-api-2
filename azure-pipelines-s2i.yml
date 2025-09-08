@@ -1,0 +1,32 @@
+trigger:
+  - master
+
+pool:
+  name: Azure Pipelines
+#  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: Build_Image
+    displayName: 'Build Image'
+    jobs:
+      - job: Build_And_Publish
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                sudo apt-get update
+                sudo apt-get -y install podman
+            displayName: Install Podman
+          - task: CmdLine@2
+            inputs:
+              script: |
+                echo "Installing S2I CLI (s2i)..."
+                curl -LO "https://github.com/openshift/source-to-image/releases/download/v1.5.1/source-to-image-v1.5.1-c301811d-linux-amd64.tar.gz"
+                tar -xzf source-to-image-v1.5.1-c301811d-linux-amd64.tar.gz
+                sudo mv s2i /usr/local/bin/
+                s2i version
+            displayName: Install OpenShift CLI
+          - task: DownloadSecureFile@1
+            name: NuGetConfig
+            inputs:
+              secureFile: 'NuGet.Config'
