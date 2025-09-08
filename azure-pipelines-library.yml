@@ -54,14 +54,13 @@ stages:
       inputs:
         command: 'pack'
         packagesToPack: '$(projectPath)'
-        arguments: '-c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/packages'
+        arguments: '-c $(buildConfiguration)'
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish package to Azure Artifacts'
       inputs:
         command: 'push'
         publishVstsFeed: 'pminkows'
-        searchPatternPush: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
 
 #- stage: Pack
 #  displayName: 'Create NuGet package'
