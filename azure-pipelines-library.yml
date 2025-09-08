@@ -30,6 +30,8 @@ stages:
       inputs:
         command: 'restore'
         projects: '$(projectPath)'
+        feedsToUse: 'select'
+        vstsFeed: 'pminkows'
 
     - task: DotNetCoreCLI@2
       displayName: 'Build solution'
@@ -54,39 +56,46 @@ stages:
         packagesToPack: '$(projectPath)'
         arguments: '-c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/packages'
 
-- stage: Pack
-  displayName: 'Create NuGet package'
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - job: Pack
-    steps:
     - task: DotNetCoreCLI@2
-      displayName: 'Pack NuGet package'
-      inputs:
-        command: 'pack'
-        packagesToPack: '$(projectPath)'
-        arguments: '-c $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/packages'
-
-    - publish: '$(Build.ArtifactStagingDirectory)/packages'
-      artifact: '$(buildArtifactName)'
-      displayName: 'Publish Artifact'
-
-- stage: Publish
-  displayName: 'Publish to Azure Artifacts'
-  dependsOn: Pack
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  jobs:
-  - job: Publish
-    steps:
-    - task: NuGetAuthenticate@1
-      displayName: 'Authenticate with Azure Artifacts'
-
-    - task: NuGetCommand@2
-      displayName: 'Push to Azure Artifacts'
+      displayName: 'Publish package to Azure Artifacts'
       inputs:
         command: 'push'
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
-        nuGetFeedType: 'internal'
-        publishVstsFeed: 'pminkows'  # This should be your Azure DevOps feed name
-        allowPackageConflicts: false
+        publishVstsFeed: 'pminkows'
+        searchPatternPush: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
+
+#- stage: Pack
+#  displayName: 'Create NuGet package'
+#  dependsOn: Build
+#  condition: succeeded()
+#  jobs:
+#  - job: Pack
+#    steps:
+#    - task: DotNetCoreCLI@2
+#      displayName: 'Pack NuGet package'
+#      inputs:
+#        command: 'pack'
+#        packagesToPack: '$(projectPath)'
+#        arguments: '-c $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/packages'
+#
+#    - publish: '$(Build.ArtifactStagingDirectory)/packages'
+#      artifact: '$(buildArtifactName)'
+#      displayName: 'Publish Artifact'
+
+#- stage: Publish
+#  displayName: 'Publish to Azure Artifacts'
+#  dependsOn: Pack
+#  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#  jobs:
+#  - job: Publish
+#    steps:
+#    - task: NuGetAuthenticate@1
+#      displayName: 'Authenticate with Azure Artifacts'
+#
+#    - task: NuGetCommand@2
+#      displayName: 'Push to Azure Artifacts'
+#      inputs:
+#        command: 'push'
+#        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/*.nupkg'
+#        nuGetFeedType: 'internal'
+#        publishVstsFeed: 'pminkows'  # This should be your Azure DevOps feed name
+#        allowPackageConflicts: false
