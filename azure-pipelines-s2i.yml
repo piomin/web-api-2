@@ -25,8 +25,13 @@ stages:
                 tar -xzf source-to-image-v1.5.1-c301811d-linux-amd64.tar.gz
                 sudo mv s2i /usr/local/bin/
                 s2i version
-            displayName: Install OpenShift CLI
+            displayName: Install S2I CLI
           - task: DownloadSecureFile@1
             name: NuGetConfig
             inputs:
               secureFile: 'NuGet.Config'
+          - task: CmdLine@2
+            inputs:
+              script: |
+                s2i build . registry.redhat.io/rhel8/dotnet-90:latest piomin/webapi-app:1.0.0 --volume $(NuGetConfig.secureFilePath):/opt/app-root/src/nuget.config:Z --context-dir src/WebApi.App
+            displayName: Build App
