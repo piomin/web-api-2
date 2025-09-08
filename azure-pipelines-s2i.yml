@@ -34,6 +34,8 @@ stages:
             inputs:
               script: |
                 podman login registry.redhat.io -u $(RedHatUsername) -p $(RedHatPassword)
+                ls -la $HOME
+                ls -la $HOME/.config
                 cat $HOME/.config/containers/auth.json
                 s2i build . registry.redhat.io/rhel8/dotnet-90:latest piomin/webapi-app:1.0.0 --volume $(NuGetConfig.secureFilePath):/opt/app-root/src/nuget.config:Z --context-dir src/WebApi.App --dockercfg-path /home/vsts/work/.config/containers/auth.json
             displayName: Build App
