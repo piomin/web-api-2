@@ -33,7 +33,14 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
-                podman login registry.redhat.io -u $(RedHatUsername) -p $(RedHatPassword)
-                cat $HOME/.config/containers/auth.json
-                s2i build . registry.redhat.io/rhel8/dotnet-90:latest piomin/webapi-app:1.0.0 --volume $(NuGetConfig.secureFilePath):/opt/app-root/src/nuget.config:Z --context-dir src/WebApi.App --dockercfg-path /home/vsts/work/.config/containers/auth.json
+                docker login registry.redhat.io -u $(RedHatUsername) -p $(RedHatPassword)
+                $version = dotnet msbuild src/WebApi.App/WebApi.App.csproj -getproperty:Version 
+                s2i build . registry.redhat.io/rhel8/dotnet-90:latest piomin/webapi-app:$version --volume $(NuGetConfig.secureFilePath):/opt/app-root/src/nuget.config:Z --context-dir src/WebApi.App --dockercfg-path /home/vsts/work/.config/containers/auth.json
+                docker images
             displayName: Build App
+          - task: CmdLine@2
+            inputs:
+              script: |
+                docker login quay.io -u pminkows -p $(RedHatPassword)
+                docker push quay.io/pminkows/webapi-app:1.0.0
+            displayName: Push Image
