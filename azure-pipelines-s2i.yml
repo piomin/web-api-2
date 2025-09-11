@@ -41,6 +41,7 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
+                $version = dotnet msbuild src/WebApi.App/WebApi.App.csproj -getproperty:Version
                 docker login quay.io -u pminkows -p $(RedHatPassword)
-                docker push quay.io/pminkows/webapi-app:1.0.0
+                docker push quay.io/pminkows/webapi-app:$version
             displayName: Push Image
