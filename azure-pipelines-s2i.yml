@@ -30,12 +30,11 @@ stages:
                 sudo mv s2i /usr/local/bin/
                 s2i version
             displayName: Install S2I CLI
-          - displayName: Get Project Version
-            name: SetVersion
-            powershell: |
+          - powershell: |
               $version = dotnet msbuild src/WebApi.App/WebApi.App.csproj -getproperty:Version
               Write-Host "##vso[task.setvariable variable=appVersion]$version"
               Write-Host "App version: $version"
+            displayName: Get Project Version
           - script: |
               echo "Version:$(appVersion)"
               docker login registry.redhat.io -u $(RedHatUsername) -p $(RedHatPassword) 
