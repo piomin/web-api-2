@@ -37,16 +37,18 @@ stages:
               version: '9.x'
 
           # Step 1: Prepare SonarQube analysis
-          - task: SonarQubePrepare@7
+          - task: SonarCloudPrepare@3
             displayName: "Prepare SonarQube Analysis"
             inputs:
               SonarQube: 'SonarCloud'   # Replace with your service connection
               scannerMode: 'dotnet'
-              configMode: 'manual'
+              organization: 'piomin'
+#              configMode: 'manual'
               projectKey: 'piomin_webapi-library'
-              extraProperties: |
-                sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library
-                sonar.organization=piomin
+              extraProperties: 'sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library'
+#              extraProperties: |
+#                sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library
+#                sonar.organization=piomin
 
           # Step 2: Build the library
           - task: DotNetCoreCLI@2
@@ -64,11 +66,13 @@ stages:
               publishTestResults: true
 
           # Step 4: Analyze with Sonar
-          - task: SonarQubeAnalyze@7
+          - task: SonarCloudAnalyze@3
+            inputs:
+              jdkversion: 'JAVA_HOME_17_X64'
             displayName: "Run SonarQube Analysis"
 
           # Step 5: Publish results to Sonar
-          - task: SonarQubePublish@7
+          - task: SonarCloudPublish@3
             displayName: "Publish SonarQube Results"
             inputs:
               pollingTimeoutSec: '300'
