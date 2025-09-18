@@ -45,7 +45,9 @@ stages:
               organization: 'piomin'
 #              configMode: 'manual'
               projectKey: 'piomin_webapi-library'
-              extraProperties: 'sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library'
+              extraProperties: |
+                sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library
+                sonar.qualitygate.wait=true
 #              extraProperties: |
 #                sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library
 #                sonar.organization=piomin
