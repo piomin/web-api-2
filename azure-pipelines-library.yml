@@ -78,6 +78,7 @@ stages:
             displayName: "Publish SonarQube Results"
             inputs:
               pollingTimeoutSec: '300'
+            condition: always()
 
 # -----------------------------
 # Stage 2: Optional Deploy (if needed)
