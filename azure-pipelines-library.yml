@@ -41,7 +41,7 @@ stages:
             displayName: "Prepare SonarQube Analysis"
             inputs:
               SonarQube: 'SonarQube'   # Replace with your service connection
-              scannerMode: 'other'
+              scannerMode: 'dotnet'
               configMode: 'manual'
               projectKey: 'piomin_webapi-library'
               extraProperties: |
