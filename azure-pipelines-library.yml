@@ -31,6 +31,11 @@ stages:
         displayName: "Build WebApi.Library"
         steps:
 
+          - task: UseDotNet@2
+            displayName: 'Init'
+            inputs:
+              version: '9.x'
+
           # Step 1: Prepare SonarQube analysis
           - task: SonarQubePrepare@7
             displayName: "Prepare SonarQube Analysis"
