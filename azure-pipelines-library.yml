@@ -40,7 +40,7 @@ stages:
           - task: SonarQubePrepare@7
             displayName: "Prepare SonarQube Analysis"
             inputs:
-              SonarQube: 'SonarQube'   # Replace with your service connection
+              SonarQube: 'SonarCloud'   # Replace with your service connection
               scannerMode: 'dotnet'
               configMode: 'manual'
               projectKey: 'piomin_webapi-library'
