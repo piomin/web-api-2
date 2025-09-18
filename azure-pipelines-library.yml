@@ -1,10 +1,10 @@
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      endpoint: piomin
-      name: piomin/azure-pipelines-templates
-      ref: refs/heads/master
+#resources:
+#  repositories:
+#    - repository: templates
+#      type: github
+#      endpoint: piomin
+#      name: piomin/azure-pipelines-templates
+#      ref: refs/heads/master
 
 trigger:
 - master
@@ -12,9 +12,71 @@ trigger:
 pool:
   name: Azure Pipelines
 
+#stages:
+#  - template: dotnet-library-stage.yml@templates
+#    parameters:
+#      projectPath: 'src/WebApi.Library/WebApi.Library.csproj'
+#      testProjectPath: 'tests/WebApi.Library.Tests/WebApi.Library.Tests.csproj'
+#      feedName: 'pminkows'
+
 stages:
-  - template: dotnet-library-stage.yml@templates
-    parameters:
-      projectPath: 'src/WebApi.Library/WebApi.Library.csproj'
-      testProjectPath: 'tests/WebApi.Library.Tests/WebApi.Library.Tests.csproj'
-      feedName: 'pminkows'
+
+  # -----------------------------
+  # Stage 1: Build
+  # -----------------------------
+  - stage: Build
+    displayName: "Build Stage"
+    jobs:
+      - job: BuildJob
+        displayName: "Build WebApi.Library"
+        steps:
+
+          # Step 1: Prepare SonarQube analysis
+          - task: SonarQubePrepare@7
+            displayName: "Prepare SonarQube Analysis"
+            inputs:
+              SonarQube: 'SonarQube'   # Replace with your service connection
+              scannerMode: 'other'
+              configMode: 'manual'
+              projectKey: 'piomin_webapi-library'
+              extraProperties: |
+                sonar.projectBaseDir=$(Build.SourcesDirectory)/src/WebApi.Library
+                sonar.organization=piomin
+
+          # Step 2: Build the library
+          - task: DotNetCoreCLI@2
+            displayName: "Build WebApi.Library"
+            inputs:
+              command: 'build'
+              projects: 'src/WebApi.Library/WebApi.Library.csproj'
+
+          # Step 3: Run tests (optional, without coverage)
+          - task: DotNetCoreCLI@2
+            displayName: "Run Tests"
+            inputs:
+              command: 'test'
+              projects: 'tests/WebApi.Library.Tests/WebApi.Library.Tests.csproj'
+              publishTestResults: true
+
+          # Step 4: Analyze with Sonar
+          - task: SonarQubeAnalyze@7
+            displayName: "Run SonarQube Analysis"
+
+          # Step 5: Publish results to Sonar
+          - task: SonarQubePublish@7
+            displayName: "Publish SonarQube Results"
+            inputs:
+              pollingTimeoutSec: '300'
+
+# -----------------------------
+# Stage 2: Optional Deploy (if needed)
+# -----------------------------
+# - stage: Deploy
+#   displayName: "Deploy Stage"
+#   dependsOn: Build
+#   jobs:
+#   - job: DeployJob
+#     pool:
+#       vmImage: 'windows-latest'
+#     steps:
+#       - script: echo "Deploy step goes here"
