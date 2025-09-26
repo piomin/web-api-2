@@ -65,7 +65,9 @@ stages:
             inputs:
               command: 'test'
               projects: 'tests/WebApi.Library.Tests/WebApi.Library.Tests.csproj'
+              arguments: '-c Release'
               publishTestResults: true
+              testRunTitle: 'Unit Tests'
 
           # Step 4: Analyze with Sonar
           - task: SonarCloudAnalyze@3
