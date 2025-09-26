@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -27,7 +28,7 @@ namespace WebApi.App.Tests
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var versionProperty = okResult.Value.GetType().GetProperty("version");
+            var versionProperty = okResult.Value?.GetType().GetProperty("version");
             Assert.NotNull(versionProperty);
             var versionValue = versionProperty.GetValue(okResult.Value);
             Assert.NotNull(versionValue);
@@ -45,9 +46,10 @@ namespace WebApi.App.Tests
                 x => x.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("GetVersion")),
+                    It.Is<It.IsAnyType>((v, t) =>
+                        v != null && v.ToString() != null && v.ToString()!.Contains("GetVersion")),
                     null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
         }
     }
