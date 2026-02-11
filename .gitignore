@@ -1,3 +1,5 @@
 /library-api/bin/
 /web-api/obj/Debug/net5.0/web-api.dll
 /library-api/obj/Debug/
+
+.odo
